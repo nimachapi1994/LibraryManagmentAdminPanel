@@ -24,6 +24,7 @@ namespace BookShop.Models
 
 
             modelBuilder.ApplyConfiguration(new BookMaping());
+            modelBuilder.ApplyConfiguration(new TranslatorMaping());
 
 
             modelBuilder.Entity<Category>().HasData(
@@ -35,35 +36,27 @@ namespace BookShop.Models
                 new Category { CategoryId = 6, Category_Name = "دانشگاهی" }
                 );
 
-            //var CategoryData = new object[,] {
-            //    {1,"هنر" },
-            //    {1,"هنر" },
-            //    {1,"هنر" },
-            //    {1,"هنر" },
-            //    {1,"هنر" }
-            //};
-            //modelBuilder.Entity<Category>().HasData(CategoryData);
 
-            modelBuilder.Entity<Book>().Property(x => x.Summary).HasMaxLength(200);
+
 
 
         }
 
 
-
-        DbSet<Book> Books { get; set; }
-        DbSet<Category> Categories { get; set; }
-        DbSet<Sub_Category> Sub_Categories { get; set; }
-        DbSet<Language> languages { get; set; }
-        DbSet<Discount> Discounts { get; set; }
-        DbSet<Auther_Book> Auther_Books { get; set; }
-        DbSet<Auther> Authers { get; set; }
-        DbSet<Customer> Customers { get; set; }
-        DbSet<State> States { get; set; }
-        DbSet<City> Cities { get; set; }
-        DbSet<Order> Orders { get; set; }
-        DbSet<Order_Status> Order_Statuses { get; set; }
-        DbSet<Order_Book> Order_Books { get; set; }
-        DbSet<Publisher> publishers { get; set; }
+        public DbSet<Translator> Translators { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Sub_Category> Sub_Categories { get; set; }
+        public DbSet<Language> languages { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Auther_Book> Auther_Books { get; set; }
+        public DbSet<Auther> Authers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order_Status> Order_Statuses { get; set; }
+        public DbSet<Order_Book> Order_Books { get; set; }
+        public DbSet<Publisher> publishers { get; set; }
     }
 }

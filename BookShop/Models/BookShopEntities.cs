@@ -46,6 +46,10 @@ namespace BookShop.Models
         //public string ImagePath { get; set; }
         public Publisher Publisher { get; set; }
 
+        [ForeignKey("Translator")]
+        public int TranslatorId { get; set; }
+        public Translator Translator { get; set; }
+
     }
 
     public class Publisher
@@ -199,7 +203,15 @@ namespace BookShop.Models
         public Customer Customer { get; set; }
     }
 
+    public class Translator
+    {
+        [Key]
+        public int Translator_Id { get; set; }
+        public string Name { get; set; }
 
+        public List<Book> Books { get; set; }
+
+    }
 
 
 

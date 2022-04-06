@@ -95,6 +95,9 @@ namespace BookShop.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("TranslatorId")
+                        .HasColumnType("int");
+
                     b.Property<short>("Weight")
                         .HasColumnType("smallint");
 
@@ -105,6 +108,8 @@ namespace BookShop.Migrations
                     b.HasIndex("PublisherId");
 
                     b.HasIndex("Sub_CategoryId");
+
+                    b.HasIndex("TranslatorId");
 
                     b.ToTable("BookInfo");
                 });
@@ -376,6 +381,40 @@ namespace BookShop.Migrations
                     b.ToTable("Sub_Categories");
                 });
 
+            modelBuilder.Entity("BookShop.Models.Translator", b =>
+                {
+                    b.Property<int>("Translator_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Translator_Id");
+
+                    b.ToTable("TranslatorInfo");
+
+                    b.HasData(
+                        new
+                        {
+                            Translator_Id = 1,
+                            Name = "rezaei"
+                        },
+                        new
+                        {
+                            Translator_Id = 2,
+                            Name = "chapi"
+                        },
+                        new
+                        {
+                            Translator_Id = 3,
+                            Name = "ahmadi"
+                        });
+                });
+
             modelBuilder.Entity("BookShop.Models.Auther_Book", b =>
                 {
                     b.HasOne("BookShop.Models.Auther", "Auther")
@@ -411,11 +450,19 @@ namespace BookShop.Migrations
                         .WithMany("Books")
                         .HasForeignKey("Sub_CategoryId");
 
+                    b.HasOne("BookShop.Models.Translator", "Translator")
+                        .WithMany("Books")
+                        .HasForeignKey("TranslatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Language");
 
                     b.Navigation("Publisher");
 
                     b.Navigation("Sub_Category");
+
+                    b.Navigation("Translator");
                 });
 
             modelBuilder.Entity("BookShop.Models.City", b =>
@@ -554,6 +601,11 @@ namespace BookShop.Migrations
                 });
 
             modelBuilder.Entity("BookShop.Models.Sub_Category", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BookShop.Models.Translator", b =>
                 {
                     b.Navigation("Books");
                 });

@@ -11,8 +11,9 @@ namespace BookShop.Models.Maping
     {
         public void Configure(EntityTypeBuilder<Book> modelBuilder)
         {
-         
-                modelBuilder.HasKey(x => x.BookId);
+
+            modelBuilder.Property(x => x.Summary).HasMaxLength(200);
+            modelBuilder.HasKey(x => x.BookId);
 
                 modelBuilder.Property(x => x.Title).
                     HasMaxLength(50).HasColumnType("nvarchar(50)").IsRequired();

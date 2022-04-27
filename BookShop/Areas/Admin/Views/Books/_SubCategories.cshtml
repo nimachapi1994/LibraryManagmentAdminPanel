@@ -1,0 +1,17 @@
+﻿
+@model IEnumerable<BookShop.Models.ViewModels.TreeViewCategory>
+
+@foreach (var item in Model)
+{
+    <ul>
+        <li>
+            <input type="checkbox" value="@item.Category_Id" name="Category_Id" /> @item.CategoryName
+            @*<ul>
+                <li><input type="checkbox" /> نقاشی روی پارچه</li>
+                <li><input type="checkbox" /> نقاشی روی سفال</li>
+            </ul>*@
+            @await Html.PartialAsync("_SubCategories",item.SubCategory)
+        </li>
+       
+    </ul>
+}

@@ -15,13 +15,17 @@ namespace BookShop.Models
         //[MaxLength(20)]
         //[Column(TypeName = "nvarchar(100)"), Required]
         public string Title { get; set; }
-
+        public string Stock { get; set; }
         public string Summary { get; set; }
+        public int PublisherID { get; set; }
         public int NumOfPage { get; set; }
         public short Weight { get; set; }
         public string ISBN { get; set; }
         public int Price { get; set; }
-
+        public DateTime? PublishDate { get; set; }
+        public bool IsPublish { get; set; }
+        public int PublishYear { get; set; }
+        public bool IsDeleted { get; set; }
         public int Count { get; set; }
 
         public string FileDownload_Book { get; set; }
@@ -31,27 +35,30 @@ namespace BookShop.Models
         //[Column(TypeName ="image")]
         public byte[] ImagesPath { get; set; }
 
-
-        public Sub_Category Sub_Category { get; set; }
-
-        public int LanguageId { get; set; }
+        public List<Book_Category> book_Categories { get; set; }
+        [ForeignKey("Language")]
+        public int LangId { get; set; }
         public Language Language { get; set; }
-        public Discount Discount { get; set; }
+        //  public Discount Discount { get; set; }
         public List<Auther_Book> Authers_Book { get; set; }
 
         public List<Order_Book> Order_Books { get; set; }
         //public List<BookImages> BookImages { get; set; }
 
-        ////json string format insert (serilaztion) and show by class view model decrialtion 
-        //public string ImagePath { get; set; }
         public Publisher Publisher { get; set; }
 
-        [ForeignKey("Translator")]
-        public int TranslatorId { get; set; }
-        public Translator Translator { get; set; }
+        public List<Translator_Book> translator_Books { get; set; }
 
     }
-
+    public class Book_Category
+    {
+        [Key]
+        public int Id { get; set; }
+        public int BookId { get; set; }
+        public Book book { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+    }
     public class Publisher
     {
         [Key]
@@ -60,27 +67,20 @@ namespace BookShop.Models
         public List<Book> Books { get; set; }
     }
 
+
     public class Category
     {
         [Key]
         public int CategoryId { get; set; }
         public string Category_Name { get; set; }
-        List<Sub_Category> Sub_Categories { get; set; }
+
+        [ForeignKey("category")]
+        public int? ParentCategoryID { get; set; }
+        public Category category { get; set; }
+        public List<Category> categories { get; set; }
+        public List<Book_Category> book_Categories { get; set; }
     }
-    public class Sub_Category
-    {
-        [Key]
-        public int Sub_CategoryId { get; set; }
-        public string Sub_Category_Name { get; set; }
 
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-
-        public List<Book> Books { get; set; }
-
-
-    }
     public class Language
     {
         [Key]
@@ -114,7 +114,9 @@ namespace BookShop.Models
     }
     public class Auther_Book
     {
-        [Key, ForeignKey("Book")]
+        [Key]
+        public int AutherBook_Id { get; set; }
+        [ForeignKey("Book")]
         public int BookId { get; set; }
 
         public int AutherId { get; set; }
@@ -203,13 +205,24 @@ namespace BookShop.Models
         public Customer Customer { get; set; }
     }
 
+    public class Translator_Book
+    {
+        [Key]
+        public int Id { get; set; }
+        [ForeignKey("book")]
+        public int BookId { get; set; }
+        public Book book { get; set; }
+        [ForeignKey("translator")]
+        public int translatorId { get; set; }
+        public Translator translator { get; set; }
+    }
     public class Translator
     {
         [Key]
         public int Translator_Id { get; set; }
         public string Name { get; set; }
 
-        public List<Book> Books { get; set; }
+        public List<Translator_Book> translator_Books { get; set; }
 
     }
 

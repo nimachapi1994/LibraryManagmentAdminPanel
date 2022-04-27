@@ -1,4 +1,5 @@
 using BookShop.Models;
+using BookShop.Models.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace BookShop
             services.AddControllersWithViews();
             services.AddDbContext<BookShopContext>(x => x.UseSqlServer
             (Configuration.GetConnectionString("DefualtConnection")));
+            services.AddTransient<BookRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

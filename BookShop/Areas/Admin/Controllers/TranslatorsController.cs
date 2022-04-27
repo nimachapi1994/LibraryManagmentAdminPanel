@@ -19,22 +19,9 @@ namespace BookShop.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var d = bookShopContext.Books.Select(x => x.BookId).ToList();
-
             
-            foreach (var item in d)
-            {
-                string name = "";
-                var id = bookShopContext.Auther_Books.Where(x => x.BookId == item);
-                if (id.Any())
-                {
-                    name += id.Select(x => x.Auther.FirstName).FirstOrDefault();
 
-                }
-
-            }
-
-
+           
 
 
 

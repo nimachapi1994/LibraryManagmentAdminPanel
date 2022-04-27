@@ -44,9 +44,11 @@ namespace BookShop.Models
 
 
         public DbSet<Translator> Translators { get; set; }
+        public DbSet<Translator_Book>  translator_Books { get; set; }
+        public DbSet<Book_Category> book_Categories{ get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Sub_Category> Sub_Categories { get; set; }
+
         public DbSet<Language> languages { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Auther_Book> Auther_Books { get; set; }

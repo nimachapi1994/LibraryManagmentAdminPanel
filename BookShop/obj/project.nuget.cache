@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "4OlYRC3tzKNzWMiI0kB/UmrSlLqpzbpZU/OxdK1ibnX19Z0TkhYBFmxNtOqcjJo4p5zKgfCPylaVSEI8+EbiJA==",
+  "dgSpecHash": "VuTg/Eyl93+S5f8vk5NvjjUGjRcpYmPENVyaBcagaaYyzJQ1PGACkELLH8oZyRmGvrF9zNL+Oc1sEcye0ZAGmA==",
   "success": true,
   "projectFilePath": "E:\\داکیومنت های برنامه نویسی\\NimaIsDeveloper1\\Projects\\MystartUpsProject\\BookShop\\BookShop\\BookShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NimaChapi\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\NimaChapi\\.nuget\\packages\\md.persiandatetime.core\\2.3.5\\md.persiandatetime.core.2.3.5.nupkg.sha512",
     "C:\\Users\\NimaChapi\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\NimaChapi\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\NimaChapi\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\5.0.0\\microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",

@@ -1,4 +1,5 @@
-﻿using BookShop.Models;
+﻿using BookShop.GeneralMethods;
+using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +67,7 @@ namespace BookShop.Areas.Admin.Controllers
                     PublisherName = item.bookGroup.First().PublisherName,
                     Stock = item.bookGroup.First().Stock,
                     Title = item.bookGroup.First().Title,
-                    Auther = AutherName.Remove(0,1)
+                    Auther = AutherName.Remove(0, 1)
 
                 };
                 ViewModelList.Add(bookIndexViewModel);

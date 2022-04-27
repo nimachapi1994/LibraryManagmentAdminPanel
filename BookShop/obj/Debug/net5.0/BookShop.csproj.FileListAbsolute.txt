@@ -10,6 +10,7 @@ E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\Mys
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\BookShop.Views.dll
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\BookShop.Views.pdb
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\Humanizer.dll
+E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\MD.PersianDateTime.Core.dll
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 E:\داکیومنت های برنامه نویسی\NimaIsDeveloper1\Projects\MystartUpsProject\BookShop\BookShop\bin\Debug\net5.0\Microsoft.CodeAnalysis.dll

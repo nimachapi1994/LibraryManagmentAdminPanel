@@ -27,8 +27,8 @@ namespace BookShop.Models.ViewModels
         public int Price { get; set; }
 
         public string Stock { get; set; }
-        [Required(ErrorMessage = "وارد کردن فایل کتاب الزامی است")]
-        public string File { get; set; }
+    //    [Required(ErrorMessage = "وارد کردن فایل کتاب الزامی است")]
+     //   public string File { get; set; }
         [Required(ErrorMessage = "وارد کردن صفحات کتاب الزامی است")]
         public int NumOfPages { get; set; }
         [Required(ErrorMessage = "وارد کردن وزن کتاب الزامی است")]
@@ -48,7 +48,7 @@ namespace BookShop.Models.ViewModels
 
         public int[] TranslatorID { get; set; }
 
-        //    public int[] CategoryID { get; set; }
+           public int[] CategoryID { get; set; }
     }
     public class AuthorList
     {

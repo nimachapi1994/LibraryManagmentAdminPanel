@@ -5,11 +5,8 @@
 {
     <ul>
         <li>
-            <input type="checkbox" value="@item.Category_Id" name="Category_Id" /> @item.CategoryName
-            @*<ul>
-                <li><input type="checkbox" /> نقاشی روی پارچه</li>
-                <li><input type="checkbox" /> نقاشی روی سفال</li>
-            </ul>*@
+            <input type="checkbox" value="@item.Category_Id" name="CategoryID" /> @item.CategoryName
+           
             @await Html.PartialAsync("_SubCategories",item.SubCategory)
         </li>
        

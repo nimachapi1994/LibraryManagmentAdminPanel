@@ -4,6 +4,7 @@ using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,9 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageIndex = 1,int row=5,string sortExpression = "Title")
         {
+            #region  getBookInfo Query Data
             string AutherName = string.Empty;
             List<BookIndexViewModel> ViewModelList = new List<BookIndexViewModel>();
             var books = (from b in bookShopContext.Books
@@ -72,21 +74,32 @@ namespace BookShop.Areas.Admin.Controllers
                 };
                 ViewModelList.Add(bookIndexViewModel);
             }
+            #endregion
 
-            return View(ViewModelList);
+            // set pagination Rows list numbers for user dynamic use it
+            int[] Rows = {1,2 ,5, 10, 20, 50, 100 };
+            ViewBag.RowId = new SelectList(Rows, row);
+
+            ViewBag.BookNumber = (pageIndex - 1) * row + 1;
+            //paging this Query
+        
+            var pageResult =  PagingList.Create(ViewModelList , row, pageIndex, sortExpression, "Title");
+            pageResult.RouteValue = new Microsoft.AspNetCore.Routing.RouteValueDictionary
+            {
+                {"row",row }
+            };
+
+            // get num of page 
+
+
+            return View(pageResult);
         }
         public IActionResult Create()
         {
 
 
 
-            var categoreis = (from c in bookShopContext.Categories
-                              where c.ParentCategoryID == null
-                              select new TreeViewCategory { Category_Id = c.CategoryId, CategoryName = c.Category_Name }).ToList();
-            categoreis.ForEach(TreeView =>
-            {
-                bookRepository.BindSubCategoreis(TreeView);
-            });
+
 
             ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageId", "LanguageName");
             ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherId", "PublisherName");
@@ -98,7 +111,7 @@ namespace BookShop.Areas.Admin.Controllers
 
 
 
-            return View(new BooksCreateViewModel(categoreis));
+            return View(new BooksCreateViewModel(bookRepository.GetAll_categories()));
         }
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateConfirm(BooksCreateViewModel booksCreateViewModel)
@@ -171,7 +184,21 @@ namespace BookShop.Areas.Admin.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Create), booksCreateViewModel);
+                ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageId", "LanguageName");
+                ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherId", "PublisherName");
+                ViewBag.AuthorID = new SelectList(bookShopContext.Authers.Select
+                    (x => new AuthorList()
+                    { AuthorID = x.AutherId, NameFamily = x.FirstName + " " + x.LastName }), "AuthorID", "NameFamily");
+
+                ViewBag.TranslatorID = new SelectList(bookShopContext.Translators, "Translator_Id", "Name");
+                booksCreateViewModel.treeViewCategories = bookRepository.GetAll_categories();
+                List<int> lstCategoryIReturnToView = new List<int>();
+                if (booksCreateViewModel.CategoryID != null)
+                {
+                    ViewBag.showcategory = booksCreateViewModel.CategoryID.ToList();
+
+                }
+                return View("Create", booksCreateViewModel);
             }
         }
     }

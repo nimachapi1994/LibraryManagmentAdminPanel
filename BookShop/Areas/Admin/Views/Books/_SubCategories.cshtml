@@ -1,14 +1,35 @@
 ﻿
 @model IEnumerable<BookShop.Models.ViewModels.TreeViewCategory>
 
-@foreach (var item in Model)
+@{ var d = new List<int>();}
+@if (ViewBag.showcategory != null)
 {
-    <ul>
-        <li>
-            <input type="checkbox" value="@item.Category_Id" name="CategoryID" /> @item.CategoryName
-           
-            @await Html.PartialAsync("_SubCategories",item.SubCategory)
-        </li>
-       
-    </ul>
+    d = ViewBag.showcategory as
+        List<int>;
 }
+<ul>
+    @foreach (var item in Model)
+    {
+        var f =d.Where (x => x == item.Category_Id).Select(x => (int)x).Any();
+        if (f)
+        {
+
+            <li>
+                <input type="checkbox" checked="checked" name="CategoryID" value="@item.Category_Id" />
+                @item.CategoryName
+
+                @*@await Html.PartialAsync("_SubCategories", item.SubCategory)*@
+
+            </li>
+        }
+        else
+        {
+            <li>
+
+                <input type="checkbox" name="CategoryID" value="@item.Category_Id" /> @item.CategoryName
+
+                @await Html.PartialAsync("_SubCategories", item.SubCategory)
+            </li>
+        }
+    }
+</ul>

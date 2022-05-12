@@ -4596,7 +4596,7 @@ tbody.collapse.show {
     margin-left: 0;
 }
 
-.page-item.active .page-link {
+.page-item.active .page-link ,.pagination .active a{
     z-index: 1;
     color: #fff;
     background-color: #42a5f5;
@@ -9594,3 +9594,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+.navv ul li a {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #777;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+    .navv ul li a:hover {
+        color: #515151;
+        text-decoration: none;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+.navv .active li a {
+    z-index: 1;
+    color: #fff;
+    background-color: #42a5f5;
+    border-color: #42a5f5;
+}

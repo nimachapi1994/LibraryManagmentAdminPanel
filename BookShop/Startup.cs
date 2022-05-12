@@ -1,3 +1,4 @@
+using BookShop.GeneralMethods;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,7 @@ namespace BookShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<PersianDatetimeCalculator>();
             services.AddControllersWithViews();
             services.AddDbContext<BookShopContext>(x => x.UseSqlServer
             (Configuration.GetConnectionString("DefualtConnection")));

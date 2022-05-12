@@ -61,6 +61,10 @@
               "target": "Package",
               "version": "[5.0.2, )"
             },
+            "ReflectionIT.Mvc.Paging": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "md.persiandatetime.core": {
               "target": "Package",
               "version": "[2.3.5, )"

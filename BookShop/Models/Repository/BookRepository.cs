@@ -15,7 +15,18 @@ namespace BookShop.Models.Repository
         }
 
 
-        public List<Category> GetAll_categories(Action action) => bookShopContext.Categories.ToList();
+        public List<TreeViewCategory> GetAll_categories()
+        {
+            var categoreis = (from c in bookShopContext.Categories
+                              where c.ParentCategoryID == null
+                              select new TreeViewCategory { Category_Id = c.CategoryId, CategoryName = c.Category_Name }).ToList();
+            categoreis.ForEach(TreeView =>
+            {
+                BindSubCategoreis(TreeView);
+            });
+            return categoreis;
+        }
+       
 
 
         public void BindSubCategoreis(TreeViewCategory category)

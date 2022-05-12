@@ -21,7 +21,7 @@ namespace BookShop.GeneralMethods
         }
         public static string ConvertMidaldiToShamsi(DateTime? dateTime)
         {
-            return new PersianDateTime(dateTime).ToString("yyyy/MM/dd");
+            return new PersianDateTime(dateTime).ToString("dddd d MMMM yyyy ساعت HH:mm");
         }
 
     }

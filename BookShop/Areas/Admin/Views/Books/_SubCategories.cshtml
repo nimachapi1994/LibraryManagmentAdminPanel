@@ -7,6 +7,7 @@
     d = ViewBag.showcategory as
         List<int>;
 }
+ @*if the category selected and dont insert book this category is selected by redirect pageing is easy *@
 <ul>
     @foreach (var item in Model)
     {
@@ -17,8 +18,7 @@
             <li>
                 <input type="checkbox" checked="checked" name="CategoryID" value="@item.Category_Id" />
                 @item.CategoryName
-
-                @*@await Html.PartialAsync("_SubCategories", item.SubCategory)*@
+        
 
             </li>
         }

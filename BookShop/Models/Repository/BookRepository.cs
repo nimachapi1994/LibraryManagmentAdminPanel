@@ -14,7 +14,7 @@ namespace BookShop.Models.Repository
             bookShopContext = _bookshopcontext;
         }
 
-
+        //show add parent category
         public List<TreeViewCategory> GetAll_categories()
         {
             var categoreis = (from c in bookShopContext.Categories
@@ -28,7 +28,7 @@ namespace BookShop.Models.Repository
         }
        
 
-
+        // show chid category for binding method
         public void BindSubCategoreis(TreeViewCategory category)
         {
            

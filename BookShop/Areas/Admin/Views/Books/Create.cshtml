@@ -47,6 +47,7 @@
                             </div>
                             <span asp-validation-for="CategoryID" class="text-danger"></span>
                             <div class="card-body">
+                                @*if the category selected and dont insert book this category is selected by redirect pageing is easy *@
                                 @{
 
                                     List<int> d =
@@ -131,22 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" asp-for="PublishYear">سال انتشار</label>
-                                            <input asp-for="PublishYear" class="form-control" placeholder="عنوان کتاب">
-                                            <span asp-validation-for="PublishYear" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="ISBN" class="form-control-label">شابک</label>
-                                            <input asp-for="ISBN" class="form-control" placeholder="شابک">
-                                            <span asp-validation-for="ISBN" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>*@
+                    
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

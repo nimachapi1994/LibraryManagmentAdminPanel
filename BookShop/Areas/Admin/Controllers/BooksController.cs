@@ -22,8 +22,9 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public async Task<IActionResult> Index(int pageIndex = 1,int row=5,string sortExpression = "Title")
+        public async Task<IActionResult> Index(int pageIndex = 1, int row = 5, string sortExpression = "Title")
         {
+            //------------------------------------------------
             #region  getBookInfo Query Data
             string AutherName = string.Empty;
             List<BookIndexViewModel> ViewModelList = new List<BookIndexViewModel>();
@@ -50,6 +51,7 @@ namespace BookShop.Areas.Admin.Controllers
 
                          }).ToList();
             var BookGroup = books.GroupBy(b => b.bookId).Select(x => new { bookId = x.Key, bookGroup = x }).ToList();
+            // when books for load author books name is repeated i use group and forech all data
 
             foreach (var item in BookGroup)
             {
@@ -75,22 +77,35 @@ namespace BookShop.Areas.Admin.Controllers
                 ViewModelList.Add(bookIndexViewModel);
             }
             #endregion
+            //------------------------------------------------
+
 
             // set pagination Rows list numbers for user dynamic use it
-            int[] Rows = {1,2 ,5, 10, 20, 50, 100 };
+            int[] Rows = { 1, 2, 5, 10, 20, 50, 100 };
             ViewBag.RowId = new SelectList(Rows, row);
 
             ViewBag.BookNumber = (pageIndex - 1) * row + 1;
             //paging this Query
-        
-            var pageResult =  PagingList.Create(ViewModelList , row, pageIndex, sortExpression, "Title");
+
+            var pageResult = PagingList.Create(ViewModelList, row, pageIndex, sortExpression, "Title");
+
+            // get num of rows 
             pageResult.RouteValue = new Microsoft.AspNetCore.Routing.RouteValueDictionary
             {
                 {"row",row }
             };
 
-            // get num of page 
 
+            if (sortExpression.Contains('-'))
+            {
+
+                ViewBag.BoostrapClassSortExpressionIcon = "fa fa-sort-amount-up";
+            }
+            else
+            {
+                ViewBag.BoostrapClassSortExpressionIcon = "fa fa-sort-amount-down";
+
+            }
 
             return View(pageResult);
         }
@@ -100,6 +115,7 @@ namespace BookShop.Areas.Admin.Controllers
 
 
 
+            // select lists for show languageIds , publisherNames , autherNames , translator
 
             ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageId", "LanguageName");
             ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherId", "PublisherName");
@@ -120,6 +136,8 @@ namespace BookShop.Areas.Admin.Controllers
             List<Translator_Book> translator_Books = new List<Translator_Book>();
             if (ModelState.IsValid)
             {
+                //if data is valid insert to db
+
                 DateTime publishedate = new DateTime();
                 if (booksCreateViewModel.IsPublish)
                 {
@@ -155,7 +173,7 @@ namespace BookShop.Areas.Admin.Controllers
                             BookId = book.BookId,
                             AutherId = booksCreateViewModel.AuthorID[i]
                         };
-                        // await bookShopContext.AddAsync(auther_Book);
+
                         Author_BookList.Add(auther_Book);
                     }
                 }
@@ -184,6 +202,8 @@ namespace BookShop.Areas.Admin.Controllers
             }
             else
             {
+                // if data invalid redirect to create page
+
                 ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageId", "LanguageName");
                 ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherId", "PublisherName");
                 ViewBag.AuthorID = new SelectList(bookShopContext.Authers.Select

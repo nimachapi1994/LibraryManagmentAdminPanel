@@ -9603,6 +9603,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #777;
     background-color: #fff;
     border: 1px solid #dee2e6;
+    
 }
 
     .navv ul li a:hover {
@@ -9617,4 +9618,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #fff;
     background-color: #42a5f5;
     border-color: #42a5f5;
+}
+
+/**paging**/
+
+.pagination{
+    justify-content:center;
 }

@@ -2,6 +2,7 @@
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReflectionIT.Mvc.Paging;
@@ -22,11 +23,14 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public async Task<IActionResult> Index(int pageIndex = 1, int row = 5, string sortExpression = "Title")
+        public async Task<IActionResult> Index(int pageIndex = 1, int row = 5, string sortExpression = "Title",string title="")
         {
             //------------------------------------------------
             #region  getBookInfo Query Data
             string AutherName = string.Empty;
+            title = string.IsNullOrEmpty(title) ? "" : title;
+
+            ViewBag.search = title;
             List<BookIndexViewModel> ViewModelList = new List<BookIndexViewModel>();
             var books = (from b in bookShopContext.Books
                          join p in bookShopContext.publishers
@@ -36,6 +40,7 @@ namespace BookShop.Areas.Admin.Controllers
                          join A in bookShopContext.Authers
                          on Au.AutherId equals A.AutherId
                          where (b.IsDeleted == false)
+                         && b.Title.Contains(title.Trim())
 
                          select new BookIndexViewModel
                          {
@@ -87,15 +92,23 @@ namespace BookShop.Areas.Admin.Controllers
             ViewBag.BookNumber = (pageIndex - 1) * row + 1;
             //paging this Query
 
+      
+
             var pageResult = PagingList.Create(ViewModelList, row, pageIndex, sortExpression, "Title");
 
             // get num of rows 
             pageResult.RouteValue = new Microsoft.AspNetCore.Routing.RouteValueDictionary
             {
-                {"row",row }
+                {"row",row },
+                {"title",title }
             };
 
 
+
+
+
+
+            //create sort <th> html table icon
             if (sortExpression.Contains('-'))
             {
 

@@ -33,12 +33,12 @@ namespace BookShop
             services.AddDbContext<BookShopContext>(x => x.UseSqlServer
             (Configuration.GetConnectionString("DefualtConnection")));
             services.AddTransient<BookRepository>();
-            //services.AddPaging(x =>
-            //{
-            //    x.ViewName = "Bootstrap4";
-            //    x.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
-            //    x.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
-            //});
+            services.AddSession(x =>
+            {
+                x.Cookie.Name = "MySession";
+                x.IdleTimeout = TimeSpan.FromMinutes(10);
+                x.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +60,7 @@ namespace BookShop
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

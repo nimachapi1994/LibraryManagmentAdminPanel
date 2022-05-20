@@ -23,12 +23,16 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public async Task<IActionResult> Index(int pageIndex = 1, int row = 5, string sortExpression = "Title",string title="")
+        public async Task<IActionResult> Index(AdvanceSearchBook advanceSearch, int pageIndex = 1, int row = 5, string sortExpression = "Title", string title = "")
         {
             //------------------------------------------------
             #region  getBookInfo Query Data
             string AutherName = string.Empty;
             title = string.IsNullOrEmpty(title) ? "" : title;
+            advanceSearch.IBSN = string.IsNullOrEmpty(advanceSearch.IBSN) ? "" : advanceSearch.IBSN;
+            advanceSearch.Publisher = string.IsNullOrEmpty(advanceSearch.Publisher) ? "" : advanceSearch.Publisher;
+            advanceSearch.Author = string.IsNullOrEmpty(advanceSearch.Author) ? "" : advanceSearch.Author;
+            advanceSearch.BookName = string.IsNullOrEmpty(advanceSearch.BookName) ? "" : advanceSearch.BookName;
 
             ViewBag.search = title;
             List<BookIndexViewModel> ViewModelList = new List<BookIndexViewModel>();
@@ -41,6 +45,10 @@ namespace BookShop.Areas.Admin.Controllers
                          on Au.AutherId equals A.AutherId
                          where (b.IsDeleted == false)
                          && b.Title.Contains(title.Trim())
+                         && b.Publisher.PublisherName.Contains(advanceSearch.Publisher)
+                         && b.ISBN.Contains(advanceSearch.IBSN)
+                         && b.Title.Contains(advanceSearch.BookName)
+
 
                          select new BookIndexViewModel
                          {
@@ -55,7 +63,7 @@ namespace BookShop.Areas.Admin.Controllers
                              Auther = A.FirstName + " " + A.LastName
 
                          }).ToList();
-            var BookGroup = books.GroupBy(b => b.bookId).Select(x => new { bookId = x.Key, bookGroup = x }).ToList();
+            var BookGroup = books.Where(x => x.Auther.Contains(advanceSearch.Author)).GroupBy(b => b.bookId).Select(x => new { bookId = x.Key, bookGroup = x }).ToList();
             // when books for load author books name is repeated i use group and forech all data
 
             foreach (var item in BookGroup)
@@ -92,7 +100,7 @@ namespace BookShop.Areas.Admin.Controllers
             ViewBag.BookNumber = (pageIndex - 1) * row + 1;
             //paging this Query
 
-      
+
 
             var pageResult = PagingList.Create(ViewModelList, row, pageIndex, sortExpression, "Title");
 
@@ -119,6 +127,14 @@ namespace BookShop.Areas.Admin.Controllers
                 ViewBag.BoostrapClassSortExpressionIcon = "fa fa-sort-amount-down";
 
             }
+            ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageName", "LanguageName");
+            ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherName", "PublisherName");
+            ViewBag.AuthorID = new SelectList(bookShopContext.Authers.Select
+                (x => new AuthorList()
+                { AuthorID = x.AutherId, NameFamily = x.FirstName + " " + x.LastName }), "NameFamily", "NameFamily");
+
+            ViewBag.TranslatorID = new SelectList(bookShopContext.Translators, "Name", "Name");
+
 
             return View(pageResult);
         }

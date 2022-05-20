@@ -66,57 +66,55 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">عنوان</label>
-                                            <input class="form-control" placeholder="عنوان">
+                                            <input name="BookName" class="form-control" placeholder="عنوان">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">شابک</label>
-                                            <input class="form-control" placeholder="شابک">
+                                            <input name="IBSN" class="form-control" placeholder="شابک">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">زبان</label>
-                                            <select class="select2 js-states form-control">
-                                                <option>فارسی</option>
-                                                <option>عربی</option>
-                                                <option>purple</option>
+                                            <select name="Language" asp-items="ViewBag.LanguageID" class="select2 js-states form-control">
+                                               
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">دسته بندی</label>
-                                            <select class="select2 js-states form-control">
-                                                <option>فارسی</option>
-                                                <option>عربی</option>
+                                            <select name="Category" class="select2 js-states form-control">
+                                                <option></option>
+
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">نویسنده</label>
-                                            <select class="select2 js-states form-control">
-                                                <option>آرزو ابراهیمی</option>
-                                                <option>زهرا رحمانی</option>
+                                            <select name="Author" asp-items="ViewBag.AuthorID" class="select2 js-states form-control">
+                                                <option></option>
+
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">مترجم</label>
-                                            <select class="select2 js-states form-control">
-                                                <option>آرزو ابراهیمی</option>
-                                                <option>زهرا رحمانی</option>
+                                            <select name="Translator" asp-items="ViewBag.TranslatorID" class="select2 js-states form-control">
+                                                <option></option>
+
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="form-control-label">ناشر</label>
-                                            <select class="select2 js-states form-control">
-                                                <option>انتشارات رسا</option>
+                                            <select name="Publisher" asp-items="ViewBag.PublisherID" class="select2 js-states form-control">
+                                               <option></option>
 
                                             </select>
                                         </div>

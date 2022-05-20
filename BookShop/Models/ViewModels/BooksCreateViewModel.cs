@@ -60,6 +60,7 @@ namespace BookShop.Models.ViewModels
 
     public class BookIndexViewModel
     {
+        public AdvanceSearchBook AdvanceSearchBook { get; set; }
         public int bookId { get; set; }
         [Display(Name ="عنوان")]
         public string Title { get; set; }

@@ -60,7 +60,7 @@ namespace BookShop.Models.ViewModels
 
     public class BookIndexViewModel
     {
-        public AdvanceSearchBook AdvanceSearchBook { get; set; }
+       
         public int bookId { get; set; }
         [Display(Name ="عنوان")]
         public string Title { get; set; }
@@ -78,6 +78,9 @@ namespace BookShop.Models.ViewModels
         public bool Ispublish { get; set; }
         [Display(Name = "نویسندگان")]
         public string Auther { get; set; }
+        public string translator { get; set; }
+        public string languageName { get; set; }
+        public string CategoryName { get;set; }
 
     }
 }

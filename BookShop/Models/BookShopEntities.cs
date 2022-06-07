@@ -18,11 +18,11 @@ namespace BookShop.Models
         public string Stock { get; set; }
         public string Summary { get; set; }
         public int PublisherID { get; set; }
-        public int NumOfPage { get; set; }
+       public int NumOfPage { get; set; }
         public short Weight { get; set; }
         public string ISBN { get; set; }
         public int Price { get; set; }
-        public DateTime? PublishDate { get; set; }
+      public DateTime? PublishDate { get; set; }
         public bool IsPublish { get; set; }
         public int PublishYear { get; set; }
         public bool IsDeleted { get; set; }

@@ -26,7 +26,7 @@ li.has-children > .thumb:after {
 }
 
 li.has-children.expanded > .thumb:after {
-    content: '▾';
+  content: '▾';
 }
 
 li.collapsed > ol.bonsai {

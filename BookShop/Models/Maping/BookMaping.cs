@@ -22,7 +22,7 @@ namespace BookShop.Models.Maping
 
                 modelBuilder.ToTable("BookInfo");
 
-                modelBuilder.Property(x => x.Count).IsRequired();
+                //modelBuilder.Property(x => x.Count).IsRequired();
            
         }
     }

@@ -10,6 +10,40 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
+
+<link href="~/css/comboTreePlugin.css" rel="stylesheet" />
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/js/comboTreePlugin.js"></script>
+
+<script src="~/js/icontains.js"></script>
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    jQuery.post('/Books/Index', '', function (ok) {
+    //        alert(ok);
+    //    })
+    //})
+
+    var SampleJSONData = @Html.Raw(Json.Serialize(ViewBag.Categories));
+
+    alert(JSON.parse(stringify(@ViewBag.Categories))
+
+    ////for (var i = 0; i < 10; i++) {
+    ////    alert(JSON.stringify(SampleJSONData)[i]['CategoryName'])
+    ////}
+
+
+    var comboTree2;
+
+jQuery(document).ready(function($) {
+    comboTree2 = $('#justAnotherInputBox').comboTree({
+        source: d ,
+			isMultiple: false
+		});
+});
+
+
+</script>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -37,6 +71,7 @@
                                 <div class="col-md-4 padding-0px" style="margin-right:10px">
                                     <input type="submit" value="نمایش بده" class="btn btn-primary float-left" />
                                 </div>
+                                <br />
                             </div>
                         </div>
                         @if (ViewBag.search != "")
@@ -45,88 +80,91 @@
                                 <a asp-area="admin" asp-controller="books" asp-action="index" class="float-left">بازگشت به لیست کتاب ها          <i class="fa fa-arrow-alt-circle-right"></i></a>
 
 
-                      
+
                             </div>
                         }
 
 
 
                     </div>
+                </form>
 
 
-                    <p>
-                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            جستجوی پیشرفته کتاب
-                        </a>
-                    </p>
-                    <div class="collapse" id="collapseExample">
-                        <div class="card card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">عنوان</label>
-                                            <input name="BookName" class="form-control" placeholder="عنوان">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">شابک</label>
-                                            <input name="IBSN" class="form-control" placeholder="شابک">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">زبان</label>
-                                            <select name="Language" asp-items="ViewBag.LanguageID" class="select2 js-states form-control">
-                                               
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">دسته بندی</label>
-                                            <select name="Category" class="select2 js-states form-control">
-                                                <option></option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">نویسنده</label>
-                                            <select name="Author" asp-items="ViewBag.AuthorID" class="select2 js-states form-control">
-                                                <option></option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">مترجم</label>
-                                            <select name="Translator" asp-items="ViewBag.TranslatorID" class="select2 js-states form-control">
-                                                <option></option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="form-control-label">ناشر</label>
-                                            <select name="Publisher" asp-items="ViewBag.PublisherID" class="select2 js-states form-control">
-                                               <option></option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="submit" value="جستجو" class="btn btn-success float-left" />
+                <p>
+                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        جستجوی پیشرفته کتاب
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <form asp-action="AdvancedSearch" method="post" asp-antiforgery="true">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">عنوان</label>
+                                        <input name="title" class="form-control" placeholder="عنوان">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">شابک</label>
+                                        <input name="ISBN" class="form-control" placeholder="شابک">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">زبان</label>
+                                        <select name="Language" asp-items="ViewBag.LanguageID" class="select2 js-states form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        @{
+                                            var d = ViewBag.Categories as List<BookShop.Models.Category>;
+                                        }
+                                        <label class="form-control-label">دسته بندی</label>
+                                        <input type="text" id="justAnotherInputBox" name="Category" placeholder="جستجو کنید" />
+
+
+                                    </div>
+                                </div>*@
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">نویسنده</label>
+                                        <select name="Author" asp-items="ViewBag.AuthorID" class="select2 js-states form-control">
+                                            <option></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">مترجم</label>
+                                        <select name="Translator" asp-items="ViewBag.TranslatorID" class="select2 js-states form-control">
+                                            <option></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label">ناشر</label>
+                                        <select name="Publisher" asp-items="ViewBag.PublisherID" class="select2 js-states form-control">
+                                            <option></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="submit" value="جستجو" class="btn btn-success float-left" />
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered searchta">
                         <thead>
@@ -169,7 +207,7 @@
                                     </td>
                                     <td class="text-center">
                                         <a class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
-                                        <a class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                        <a asp-area="Admin" asp-controller="Books" asp-action="Detail" asp-route-Id="@item.bookId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
                                         <a class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
                                     </td>
                                 </tr>
@@ -192,4 +230,7 @@
         </div>
     </div>
 </div>
+
+)
+
 

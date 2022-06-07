@@ -23,75 +23,51 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public async Task<IActionResult> Index(AdvanceSearchBook advanceSearch, int pageIndex = 1, int row = 5, string sortExpression = "Title", string title = "")
+        public async Task<IActionResult> Detail(int id)
         {
-            //------------------------------------------------
-            #region  getBookInfo Query Data
-            string AutherName = string.Empty;
-            title = string.IsNullOrEmpty(title) ? "" : title;
-            advanceSearch.IBSN = string.IsNullOrEmpty(advanceSearch.IBSN) ? "" : advanceSearch.IBSN;
-            advanceSearch.Publisher = string.IsNullOrEmpty(advanceSearch.Publisher) ? "" : advanceSearch.Publisher;
-            advanceSearch.Author = string.IsNullOrEmpty(advanceSearch.Author) ? "" : advanceSearch.Author;
-            advanceSearch.BookName = string.IsNullOrEmpty(advanceSearch.BookName) ? "" : advanceSearch.BookName;
-
-            ViewBag.search = title;
-            List<BookIndexViewModel> ViewModelList = new List<BookIndexViewModel>();
-            var books = (from b in bookShopContext.Books
-                         join p in bookShopContext.publishers
-                          on b.PublisherID equals p.PublisherId
-                         join Au in bookShopContext.Auther_Books
-                         on b.BookId equals Au.BookId
-                         join A in bookShopContext.Authers
-                         on Au.AutherId equals A.AutherId
-                         where (b.IsDeleted == false)
-                         && b.Title.Contains(title.Trim())
-                         && b.Publisher.PublisherName.Contains(advanceSearch.Publisher)
-                         && b.ISBN.Contains(advanceSearch.IBSN)
-                         && b.Title.Contains(advanceSearch.BookName)
-
-
-                         select new BookIndexViewModel
-                         {
-                             bookId = b.BookId,
-                             ISBN = b.ISBN,
-                             Ispublish = b.IsPublish,
-                             PublisherName = p.PublisherName,
-                             Price = b.Price,
-                             PublishDate = b.PublishDate,
-                             Stock = b.Stock,
-                             Title = b.Title,
-                             Auther = A.FirstName + " " + A.LastName
-
-                         }).ToList();
-            var BookGroup = books.Where(x => x.Auther.Contains(advanceSearch.Author)).GroupBy(b => b.bookId).Select(x => new { bookId = x.Key, bookGroup = x }).ToList();
-            // when books for load author books name is repeated i use group and forech all data
-
-            foreach (var item in BookGroup)
+            Book book = await bookRepository.GetBookDetailAsync(id);
+            var ObjectData = new
             {
-                AutherName = "";
-                foreach (var item2 in item.bookGroup)
-                {
-                    AutherName += $"_{item2.Auther}";
-                }
+                // convert to json data 
+                BookDetailData = Newtonsoft.Json.JsonConvert.SerializeObject(book)
+            };
 
-                BookIndexViewModel bookIndexViewModel = new BookIndexViewModel()
-                {
-                    bookId = item.bookId,
-                    ISBN = item.bookGroup.First().ISBN,
-                    Ispublish = item.bookGroup.First().Ispublish,
-                    Price = item.bookGroup.First().Price,
-                    PublishDate = item.bookGroup.First().PublishDate,
-                    PublisherName = item.bookGroup.First().PublisherName,
-                    Stock = item.bookGroup.First().Stock,
-                    Title = item.bookGroup.First().Title,
-                    Auther = AutherName.Remove(0, 1)
+            return RedirectToAction("Detail", ObjectData);
+        }
+        public IActionResult Detail(string BookDetailData)
+        {
+            return View();
+        }
 
-                };
-                ViewModelList.Add(bookIndexViewModel);
-            }
-            #endregion
-            //------------------------------------------------
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AdvancedSearch(AdvanceSearchBook ViewModel)
+        {
+            ViewModel.title = String.IsNullOrEmpty(ViewModel.title) ? "" : ViewModel.title;
+            ViewModel.ISBN = String.IsNullOrEmpty(ViewModel.ISBN) ? "" : ViewModel.ISBN;
+            ViewModel.Publisher = String.IsNullOrEmpty(ViewModel.Publisher) ? "" : ViewModel.Publisher;
+            ViewModel.Author = String.IsNullOrEmpty(ViewModel.Author) ? "" : ViewModel.Author;
+            ViewModel.Translator = String.IsNullOrEmpty(ViewModel.Translator) ? "" : ViewModel.Translator;
+            ViewModel.Category = String.IsNullOrEmpty(ViewModel.Category) ? "" : ViewModel.Category;
+            ViewModel.Language = String.IsNullOrEmpty(ViewModel.Language) ? "" : ViewModel.Language;
 
+            var getAdvancedBookSearch =
+                  await bookRepository.getAllBooksInAdminPanel(ViewModel.title, ViewModel.ISBN,
+                  ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator);
+
+            string jsonBookData =
+                Newtonsoft.Json.JsonConvert.SerializeObject(getAdvancedBookSearch);
+            return RedirectToAction(nameof(AdvancedSearchPage), new { data = jsonBookData });
+
+        }
+        [HttpGet]
+        [RequestSizeLimit(100_000_000)]
+        public IActionResult AdvancedSearchPage(string data)
+        {
+            return View(Newtonsoft.Json.JsonConvert.DeserializeObject<List<BookIndexViewModel>>(data));
+        }
+        public async Task<IActionResult> Index(int pageIndex = 1, int row = 5, string sortExpression = "Title", string title = "")
+        {
+            ViewBag.search = title;
 
             // set pagination Rows list numbers for user dynamic use it
             int[] Rows = { 1, 2, 5, 10, 20, 50, 100 };
@@ -101,32 +77,30 @@ namespace BookShop.Areas.Admin.Controllers
             //paging this Query
 
 
+            //get all books in index admin panel by not use advanced Search.....! just read All Books
 
-            var pageResult = PagingList.Create(ViewModelList, row, pageIndex, sortExpression, "Title");
+            List<BookIndexViewModel> books = await bookRepository.getAllBooksInAdminPanel("", "", "", "", "", "");
+
+            var pageResult = PagingList.Create(books, row, pageIndex, sortExpression, "Title");
 
             // get num of rows 
             pageResult.RouteValue = new Microsoft.AspNetCore.Routing.RouteValueDictionary
-            {
+             {
                 {"row",row },
                 {"title",title }
-            };
-
-
-
-
-
+             };
 
             //create sort <th> html table icon
             if (sortExpression.Contains('-'))
             {
-
                 ViewBag.BoostrapClassSortExpressionIcon = "fa fa-sort-amount-up";
             }
             else
             {
                 ViewBag.BoostrapClassSortExpressionIcon = "fa fa-sort-amount-down";
-
             }
+
+
             ViewBag.LanguageID = new SelectList(bookShopContext.languages, "LanguageName", "LanguageName");
             ViewBag.PublisherID = new SelectList(bookShopContext.publishers, "PublisherName", "PublisherName");
             ViewBag.AuthorID = new SelectList(bookShopContext.Authers.Select
@@ -134,9 +108,11 @@ namespace BookShop.Areas.Admin.Controllers
                 { AuthorID = x.AutherId, NameFamily = x.FirstName + " " + x.LastName }), "NameFamily", "NameFamily");
 
             ViewBag.TranslatorID = new SelectList(bookShopContext.Translators, "Name", "Name");
+            ViewBag.Categories = bookRepository.GetAll_categories().ToArray();
 
 
             return View(pageResult);
+
         }
         public IActionResult Create()
         {
@@ -163,9 +139,11 @@ namespace BookShop.Areas.Admin.Controllers
         {
             List<Auther_Book> Author_BookList = new List<Auther_Book>();
             List<Translator_Book> translator_Books = new List<Translator_Book>();
+            List<Book_Category> book_Categories = new List<Book_Category>();
             if (ModelState.IsValid)
             {
-                //if data is valid insert to db
+
+                // if data is ok create a new book
 
                 DateTime publishedate = new DateTime();
                 if (booksCreateViewModel.IsPublish)
@@ -225,9 +203,23 @@ namespace BookShop.Areas.Admin.Controllers
                 }
                 await bookShopContext.translator_Books.AddRangeAsync(translator_Books);
                 bookShopContext.SaveChanges();
+                if (booksCreateViewModel.CategoryID != null)
+                {
+                    foreach (int CategoryId_Item in booksCreateViewModel.CategoryID)
+                    {
+                        book_Categories.Add(new Book_Category
+                        {
+                            BookId = book.BookId,
+                            CategoryId = CategoryId_Item
+                        });
+
+                    }
+                }
+                await bookShopContext.book_Categories.AddRangeAsync(book_Categories);
+                bookShopContext.SaveChanges();
+
 
                 return RedirectToAction(nameof(Create));
-
             }
             else
             {
@@ -252,3 +244,4 @@ namespace BookShop.Areas.Admin.Controllers
         }
     }
 }
+

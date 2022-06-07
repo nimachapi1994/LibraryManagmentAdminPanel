@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
+  
     public class BooksController : Controller
     {
         private readonly BookShopContext bookShopContext;
@@ -52,7 +53,7 @@ namespace BookShop.Areas.Admin.Controllers
 
             var getAdvancedBookSearch =
                   await bookRepository.getAllBooksInAdminPanel(ViewModel.title, ViewModel.ISBN,
-                  ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator);
+                  ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator,ViewModel.Category);
 
             string jsonBookData =
                 Newtonsoft.Json.JsonConvert.SerializeObject(getAdvancedBookSearch);
@@ -79,7 +80,7 @@ namespace BookShop.Areas.Admin.Controllers
 
             //get all books in index admin panel by not use advanced Search.....! just read All Books
 
-            List<BookIndexViewModel> books = await bookRepository.getAllBooksInAdminPanel("", "", "", "", "", "");
+            List<BookIndexViewModel> books = await bookRepository.getAllBooksInAdminPanel("", "", "", "", "", "","");
 
             var pageResult = PagingList.Create(books, row, pageIndex, sortExpression, "Title");
 
@@ -108,8 +109,7 @@ namespace BookShop.Areas.Admin.Controllers
                 { AuthorID = x.AutherId, NameFamily = x.FirstName + " " + x.LastName }), "NameFamily", "NameFamily");
 
             ViewBag.TranslatorID = new SelectList(bookShopContext.Translators, "Name", "Name");
-            ViewBag.Categories = bookRepository.GetAll_categories().ToArray();
-
+            ViewBag.Categories = bookRepository.GetAll_categories();
 
             return View(pageResult);
 
@@ -243,5 +243,6 @@ namespace BookShop.Areas.Admin.Controllers
             }
         }
     }
+    
 }
 

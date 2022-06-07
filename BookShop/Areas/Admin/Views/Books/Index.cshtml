@@ -11,38 +11,7 @@
 }
 
 
-<link href="~/css/comboTreePlugin.css" rel="stylesheet" />
-<script src="~/vendor/jquery/jquery.min.js"></script>
-<script src="~/js/comboTreePlugin.js"></script>
 
-<script src="~/js/icontains.js"></script>
-<script type="text/javascript">
-    //$(document).ready(function () {
-    //    jQuery.post('/Books/Index', '', function (ok) {
-    //        alert(ok);
-    //    })
-    //})
-
-    var SampleJSONData = @Html.Raw(Json.Serialize(ViewBag.Categories));
-
-    alert(JSON.parse(stringify(@ViewBag.Categories))
-
-    ////for (var i = 0; i < 10; i++) {
-    ////    alert(JSON.stringify(SampleJSONData)[i]['CategoryName'])
-    ////}
-
-
-    var comboTree2;
-
-jQuery(document).ready(function($) {
-    comboTree2 = $('#justAnotherInputBox').comboTree({
-        source: d ,
-			isMultiple: false
-		});
-});
-
-
-</script>
 
 <div class="row">
     <div class="col-md-12">
@@ -119,17 +88,15 @@ jQuery(document).ready(function($) {
                                         </select>
                                     </div>
                                 </div>
-                                @*<div class="col-md-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        @{
-                                            var d = ViewBag.Categories as List<BookShop.Models.Category>;
-                                        }
+                                        
                                         <label class="form-control-label">دسته بندی</label>
                                         <input type="text" id="justAnotherInputBox" name="Category" placeholder="جستجو کنید" />
 
 
                                     </div>
-                                </div>*@
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-control-label">نویسنده</label>
@@ -231,6 +198,15 @@ jQuery(document).ready(function($) {
     </div>
 </div>
 
-)
+<script type="text/javascript">
+    var SampleJSONData = @Html.Raw(Json.Serialize(ViewBag.Categories));
+    var comboTree2;
+
+jQuery(document).ready(function($) {
+		comboTree2 = $('#justAnotherInputBox').comboTree({
+			source : SampleJSONData,
+			isMultiple: false
+		});
+});</script>
 
 

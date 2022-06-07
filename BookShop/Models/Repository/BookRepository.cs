@@ -24,7 +24,7 @@ namespace BookShop.Models.Repository
              });
         }
 
-        public async Task<List<BookIndexViewModel>> getAllBooksInAdminPanel(string title, string ISBN, string Language, string Publisher, string Author, string Translator)
+        public async Task<List<BookIndexViewModel>> getAllBooksInAdminPanel(string title, string ISBN, string Language, string Publisher, string Author, string Translator,string Category)
         {
             string AuthorName = string.Empty;
             string TranslatorName = string.Empty;
@@ -80,6 +80,9 @@ namespace BookShop.Models.Repository
                             && b.Title.Contains(title.Trim())
                            && EF.Functions.Like(lang.LanguageName, "%" + Language.Trim() + "%")
                               && EF.Functions.Like(TranslatorOK.Name, "%" + Translator.Trim() + "%")                          
+                             // && EF.Functions.Like(catOk.Category_Name, "%" + Category.Trim() + "%")
+                             && catOk.Category_Name.Contains(Category.Trim())
+
                              select new BookIndexViewModel
                              {
                                  bookId = b.BookId,
@@ -97,7 +100,8 @@ namespace BookShop.Models.Repository
                                  CategoryName = catOk != null ? catOk.Category_Name : ""
 
 
-                             }).Where(x => x.Auther.Contains(Author.Trim())).ToList();
+                             }).Where(x => x.Auther.Contains(Author.Trim())
+                             && x.CategoryName.Contains(Category.Trim())).ToList();
 
 
 
@@ -163,7 +167,7 @@ namespace BookShop.Models.Repository
         {
             var categoreis = (from c in bookShopContext.Categories
                               where c.ParentCategoryID == null
-                              select new TreeViewCategory { Category_Id = c.CategoryId, CategoryName = c.Category_Name }).ToList();
+                              select new TreeViewCategory { id = c.CategoryId, title = c.Category_Name }).ToList();
             categoreis.ForEach(TreeView =>
             {
                 BindSubCategoreis(TreeView);
@@ -176,17 +180,17 @@ namespace BookShop.Models.Repository
         public void BindSubCategoreis(TreeViewCategory category)
         {
 
-            var subCategories = bookShopContext.Categories.Where(x => x.ParentCategoryID == category.Category_Id).
+            var subCategories = bookShopContext.Categories.Where(x => x.ParentCategoryID == category.id).
               Select(y => new TreeViewCategory
               {
-                  CategoryName = y.Category_Name,
-                  Category_Id = y.CategoryId
+                  title = y.Category_Name,
+                  id = y.CategoryId
               }).ToList();
 
             foreach (var item in subCategories)
             {
                 BindSubCategoreis(item);
-                category.SubCategory.Add(item);
+                category.subs.Add(item);
             }
 
 

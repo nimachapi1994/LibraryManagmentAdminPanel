@@ -9,11 +9,11 @@ namespace BookShop.Models.ViewModels
     {
         public TreeViewCategory()
         {
-            SubCategory = new List<TreeViewCategory>();
+            subs = new List<TreeViewCategory>();
         }
 
-        public int Category_Id { get; set; }
-        public string CategoryName { get; set; }
-        public List<TreeViewCategory> SubCategory { get; set; }
+        public int id { get; set; }
+        public string title { get; set; }
+        public List<TreeViewCategory> subs { get; set; }
     }
 }

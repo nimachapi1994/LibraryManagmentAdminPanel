@@ -11,13 +11,13 @@
 <ul>
     @foreach (var item in Model)
     {
-        var f =d.Where (x => x == item.Category_Id).Select(x => (int)x).Any();
+        var f =d.Where (x => x == item.id).Select(x => (int)x).Any();
         if (f)
         {
 
             <li>
-                <input type="checkbox" checked="checked" name="CategoryID" value="@item.Category_Id" />
-                @item.CategoryName
+                <input type="checkbox" checked="checked" name="CategoryID" value="@item.subs" />
+                @item.title
         
 
             </li>
@@ -26,9 +26,9 @@
         {
             <li>
 
-                <input type="checkbox" name="CategoryID" value="@item.Category_Id" /> @item.CategoryName
+                <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
 
-                @await Html.PartialAsync("_SubCategories", item.SubCategory)
+                @await Html.PartialAsync("_SubCategories", item.subs)
             </li>
         }
     }

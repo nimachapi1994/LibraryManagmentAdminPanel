@@ -73,11 +73,11 @@
 
 
 
-                                        if (d.Where(x => x == item.Category_Id).Select(x => (int)x).Any())
+                                        if (d.Where(x => x == item.id).Select(x => (int)x).Any())
                                         {
                                             <li>
-                                                <input checked="checked" type="checkbox" name="CategoryID" value="@item.Category_Id" /> @item.CategoryName
-                                                @await Html.PartialAsync("_SubCategories", item.SubCategory)
+                                                <input checked="checked" type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+                                                @await Html.PartialAsync("_SubCategories", item.subs)
                                             </li>
                                         }
 
@@ -87,8 +87,8 @@
                                         {
 
                                             <li>
-                                                <input type="checkbox" name="CategoryID" value="@item.Category_Id" /> @item.CategoryName
-                                                @await Html.PartialAsync("_SubCategories", item.SubCategory)
+                                                <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+                                                @await Html.PartialAsync("_SubCategories", item.subs)
                                             </li>
                                         }
 

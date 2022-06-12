@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        
+
                                         <label class="form-control-label">دسته بندی</label>
                                         <input type="text" id="justAnotherInputBox" name="Category" placeholder="جستجو کنید" />
 
@@ -173,7 +173,7 @@
                                         <label class="badge  badge-@(item.Ispublish?"success":"info") btn-block">@(item.Ispublish?"منتشر شده":"منتشر نشده")</label>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                        <a class="btn btn-info btn-icon" href="/admin/books/detail/@item.bookId"><i class="fa fa-eye text-white"></i></a>
                                         <a asp-area="Admin" asp-controller="Books" asp-action="Detail" asp-route-Id="@item.bookId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
                                         <a class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
                                     </td>

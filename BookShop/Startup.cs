@@ -1,15 +1,14 @@
-using BookShop.GeneralMethods;
-using BookShop.Models;
+using BookShop.Data;
 using BookShop.Models.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,24 +28,23 @@ namespace BookShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<PersianDatetimeCalculator>();
-            services.AddControllersWithViews();
-            services.AddTransient<PersianDatetimeCalculator>();
-            services.AddDbContext<BookShopContext>(x => x.UseSqlServer
-            (Configuration.GetConnectionString("DefualtConnection")));
+            services.AddDbContext<BookShopContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<BookRepository>();
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<BookShopContext>();
+            services.AddControllersWithViews();
+
+
             services.AddSession(x =>
             {
                 x.Cookie.Name = "MySession";
                 x.IdleTimeout = TimeSpan.FromMinutes(10);
                 x.Cookie.HttpOnly = true;
             });
-            //services.Configure<FormOptions>(x =>
-            //{
-            //    x.ValueLengthLimit = int.MaxValue;
-            //    x.MultipartBodyLengthLimit = int.MaxValue;
-            //    x.MultipartHeadersLengthLimit = int.MaxValue;
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +53,7 @@ namespace BookShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -67,20 +66,21 @@ namespace BookShop
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                 name: "areas",
-                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-               );
-                endpoints.MapControllerRoute(
+              name: "areas",
+              pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+             endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+               // endpoints.MapRazorPages();
             });
-
-
         }
     }
 }

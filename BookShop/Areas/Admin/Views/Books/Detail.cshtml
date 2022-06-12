@@ -1,8 +1,153 @@
-﻿
+﻿@model BookShop.Models.Book
+@using BookShop.GeneralMethods
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<h2>Detail</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                اطلاعات کتاب @Model.Title
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="~/images/Book.png" height="250" />
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>عنوان کتاب : @Model.Title</p>
+                                <p>شابک : @Model.ISBN</p>
+                                <p>سال انتشار : @Model.PublishYear</p>
+                                <p>قیمت : @Model.Price</p>
+                                <p>موجودی : @Model.Stock</p>
+                                <p>تعداد صفحات : @Model.NumOfPage</p>
+                                <p>زبان کتاب : @Model.Language.LanguageName</p>
+                            </div>
+                            <div class="col-md-6">
+
+                                <p>ناشر : @Model.Publisher.PublisherName</p>
+                                <p>
+                                    نویسندگان :
+                                    @{string Authors = "";}
+                                    @foreach (var item in ViewBag.showAuthors as IEnumerable<BookShop.Models.Auther>)
+                                    {
+                                        if (Authors != "")
+                                        {
+                                            Authors = Authors + " - " + item.FirstName + " " + item.LastName;
+                                        }
+                                        else
+                                        {
+                                            Authors = item.FirstName + " " + item.LastName;
+                                        }
+                                    }
+
+                                    @Authors
+                                </p>
+                                <p>
+                                    مترجمان :
+                                    @{var TranslatorsList = ViewBag.Translators_book as IEnumerable<BookShop.Models.Translator>;}
+                                    @if (TranslatorsList.Count() != 0)
+                                    {
+
+                                        string Translators = "";
+                                        @foreach (var item in TranslatorsList)
+                                        {
+                                            if (Translators != "")
+                                            {
+                                                Translators = Translators + " - " + item.Name;
+                                            }
+                                            else
+                                            {
+                                                Translators = item.Name;
+                                            }
+                                        }
+
+                                        @Translators
+                                    }
+
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+
+                                </p>
+                                <p>
+                                    دسته بندی ها :
+                                    @{ var CategoriesList = ViewBag.Category_book as IEnumerable<BookShop.Models.Category>;}
+                                    @if (CategoriesList.Count() != 0)
+                                    {
+                                        string Categories = "";
+                                        @foreach (var item in CategoriesList)
+                                        {
+                                            if (Categories != "")
+                                            {
+                                                Categories = Categories + " - " + item.Category_Name;
+                                            }
+                                            else
+                                            {
+                                                Categories = item.Category_Name;
+                                            }
+                                        }
+
+                                        @Categories
+                                    }
+
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+
+                                </p>
+                                <p>
+                                    تاریخ انتشار :
+                                    @if (Model.PublishDate != null)
+                                    {
+                                        @PersianDatetimeCalculator.ConvertMidaldiToShamsi((DateTime)Model.PublishDate)
+                                    }
+
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </p>
+                                <p>
+                                    وضعیت :
+                                    @if (Model.IsPublish == true)
+                                    {
+                                        <span>منتشر شده</span>
+                                    }
+
+                                    else
+                                    {
+                                        <span>پیش نویس</span>
+                                    }
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <hr />
+                        <p>
+                            خلاصه کتاب : @Model.Summary
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 

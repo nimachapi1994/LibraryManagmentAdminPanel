@@ -1,4 +1,5 @@
-﻿using BookShop.GeneralMethods;
+﻿using BookShop.Data;
+using BookShop.GeneralMethods;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-  
+
     public class BooksController : Controller
     {
         private readonly BookShopContext bookShopContext;
@@ -24,21 +25,16 @@ namespace BookShop.Areas.Admin.Controllers
             bookShopContext = _bookShopContext;
             bookRepository = _bookRespository;
         }
-        public async Task<IActionResult> Detail(int id)
+        public IActionResult Detail(int id)
         {
-            Book book = await bookRepository.GetBookDetailAsync(id);
-            var ObjectData = new
-            {
-                // convert to json data 
-                BookDetailData = Newtonsoft.Json.JsonConvert.SerializeObject(book)
-            };
+            Book book = bookRepository.GetBookDetail(id).Item1;
+            ViewBag.showAuthors = bookRepository.GetBookDetail(id).Item2;
+            ViewBag.Translators_book = bookRepository.GetBookDetail(id).Item3;
+            ViewBag.Category_book = bookRepository.GetBookDetail(id).Item4;
 
-            return RedirectToAction("Detail", ObjectData);
+            return View(book);
         }
-        public IActionResult Detail(string BookDetailData)
-        {
-            return View();
-        }
+
 
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AdvancedSearch(AdvanceSearchBook ViewModel)
@@ -51,9 +47,9 @@ namespace BookShop.Areas.Admin.Controllers
             ViewModel.Category = String.IsNullOrEmpty(ViewModel.Category) ? "" : ViewModel.Category;
             ViewModel.Language = String.IsNullOrEmpty(ViewModel.Language) ? "" : ViewModel.Language;
 
-            var getAdvancedBookSearch =
+            IEnumerable<BookIndexViewModel> getAdvancedBookSearch =
                   await bookRepository.getAllBooksInAdminPanel(ViewModel.title, ViewModel.ISBN,
-                  ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator,ViewModel.Category);
+                  ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator, ViewModel.Category);
 
             string jsonBookData =
                 Newtonsoft.Json.JsonConvert.SerializeObject(getAdvancedBookSearch);
@@ -80,7 +76,7 @@ namespace BookShop.Areas.Admin.Controllers
 
             //get all books in index admin panel by not use advanced Search.....! just read All Books
 
-            List<BookIndexViewModel> books = await bookRepository.getAllBooksInAdminPanel("", "", "", "", "", "","");
+            IEnumerable<BookIndexViewModel> books = await bookRepository.getAllBooksInAdminPanel("", "", "", "", "", "", "");
 
             var pageResult = PagingList.Create(books, row, pageIndex, sortExpression, "Title");
 
@@ -243,6 +239,6 @@ namespace BookShop.Areas.Admin.Controllers
             }
         }
     }
-    
+
 }
 

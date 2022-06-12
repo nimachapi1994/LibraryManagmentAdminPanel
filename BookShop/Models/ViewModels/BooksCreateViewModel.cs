@@ -9,8 +9,8 @@ namespace BookShop.Models.ViewModels
     public class BooksCreateViewModel
 
     {
-      
-        
+
+
         public BooksCreateViewModel(List<TreeViewCategory> _treeViewCategories)
         {
             treeViewCategories = _treeViewCategories;
@@ -28,8 +28,8 @@ namespace BookShop.Models.ViewModels
         public int Price { get; set; }
         [Required(ErrorMessage = "وارد کردن موجودی کتاب الزامی است")]
         public string Stock { get; set; }
-    //    [Required(ErrorMessage = "وارد کردن فایل کتاب الزامی است")]
-     //   public string File { get; set; }
+        //    [Required(ErrorMessage = "وارد کردن فایل کتاب الزامی است")]
+        //   public string File { get; set; }
         [Required(ErrorMessage = "وارد کردن صفحات کتاب الزامی است")]
         public int NumOfPages { get; set; }
         [Required(ErrorMessage = "وارد کردن وزن کتاب الزامی است")]
@@ -60,11 +60,11 @@ namespace BookShop.Models.ViewModels
 
     public class BookIndexViewModel
     {
-       
+
         public int bookId { get; set; }
-        [Display(Name ="عنوان")]
+        [Display(Name = "عنوان")]
         public string Title { get; set; }
-    
+
         public string Stock { get; set; }
         [Display(Name = "قیمت (ریال)")]
         public int Price { get; set; }
@@ -80,7 +80,8 @@ namespace BookShop.Models.ViewModels
         public string Auther { get; set; }
         public string translator { get; set; }
         public string languageName { get; set; }
-        public string CategoryName { get;set; }
+        public string CategoryName { get; set; }
+        public int NumberOfPages { get; set; }
 
     }
 }

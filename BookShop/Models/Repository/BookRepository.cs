@@ -1,4 +1,5 @@
-﻿using BookShop.Models.ViewModels;
+﻿using BookShop.Data;
+using BookShop.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,35 @@ namespace BookShop.Models.Repository
         {
             bookShopContext = _bookshopcontext;
         }
-        public async Task<Book> GetBookDetailAsync(int id)
+        public Tuple<Book, IEnumerable<Auther>, IEnumerable<Translator>, IEnumerable<Category>> GetBookDetail(int id)
         {
-            return await Task.Run(delegate ()
-             {
-                 return bookShopContext.Books.FromSqlRaw
-                 ($"select * from dbo.bookinfo where BookId={id}")
-                 .Include(x => x.Language).Include(x => x.Publisher).First();
-             });
+            var book = bookShopContext.Books.FromSqlRaw
+                   ($"select * from dbo.bookinfo where BookId={id}")
+                   .Include(x => x.Language).Include(x => x.Publisher).First();
+            var author_Book = (from Au in bookShopContext.Authers
+                               join Au_book in bookShopContext.Auther_Books
+                               on Au.AutherId equals Au_book.AutherId
+                               where Au_book.BookId == id
+                               select new Auther
+                               { FirstName = Au.FirstName, LastName = Au.LastName }).AsEnumerable();
+
+            var translator_Book = (from tr in bookShopContext.Translators
+                                   join tr_book in bookShopContext.translator_Books
+                                   on tr.Translator_Id equals tr_book.translatorId
+                                   where tr_book.BookId == id
+                                   select new Translator { Name = tr.Name }).AsEnumerable();
+
+            var category_book = (from cat in bookShopContext.Categories
+                                 join cat_book in bookShopContext.book_Categories
+                                 on cat.CategoryId equals cat_book.CategoryId
+                                 where cat_book.BookId == id
+                                 select new Category { Category_Name = cat.Category_Name }).AsEnumerable();
+
+            return Tuple.Create(book, author_Book, translator_Book, category_book);
         }
 
-        public async Task<List<BookIndexViewModel>> getAllBooksInAdminPanel(string title, string ISBN, string Language, string Publisher, string Author, string Translator,string Category)
+
+        public async Task<List<BookIndexViewModel>> getAllBooksInAdminPanel(string title, string ISBN, string Language, string Publisher, string Author, string Translator, string Category)
         {
             string AuthorName = string.Empty;
             string TranslatorName = string.Empty;
@@ -79,7 +98,7 @@ namespace BookShop.Models.Repository
                             && b.ISBN.Contains(ISBN.Trim())
                             && b.Title.Contains(title.Trim())
                            && EF.Functions.Like(lang.LanguageName, "%" + Language.Trim() + "%")
-                              && EF.Functions.Like(TranslatorOK.Name, "%" + Translator.Trim() + "%")                          
+                              && EF.Functions.Like(TranslatorOK.Name, "%" + Translator.Trim() + "%")
                              // && EF.Functions.Like(catOk.Category_Name, "%" + Category.Trim() + "%")
                              && catOk.Category_Name.Contains(Category.Trim())
 
@@ -101,7 +120,7 @@ namespace BookShop.Models.Repository
 
 
                              }).Where(x => x.Auther.Contains(Author.Trim())
-                             && x.CategoryName.Contains(Category.Trim())).ToList();
+                            /* && x.CategoryName.Contains(Category.Trim()*/).ToList();
 
 
 

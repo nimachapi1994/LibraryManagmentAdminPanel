@@ -1,6 +1,6 @@
 ﻿<script src="~/js/comboTreePlugin.js"></script>
 <script src="~/js/icontains.js"></script>
-@using BookShop.GeneralMethods
+@inject ConvertMidaldiToShamsiString ConvertMiladiToShamsi
 <!doctype html>
 <html lang="en">
 <head>
@@ -38,7 +38,7 @@
 
             <ul class="navbar-nav ml-auto">
                 <li>
-                    <span style="padding-right:20px">@PersianDatetimeCalculator.ConvertMidaldiToShamsi(DateTime.Now)</span>
+                    <span style="padding-right:20px">@ConvertMiladiToShamsi.ConvertMidaldiToShamsi(DateTime.Now)</span>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -108,7 +108,7 @@
     <script src="~/js/comboTreePlugin.js"></script>
     <script src="~/js/icontains.js"></script>
 
-    
+
     <script>
 
         // for select2

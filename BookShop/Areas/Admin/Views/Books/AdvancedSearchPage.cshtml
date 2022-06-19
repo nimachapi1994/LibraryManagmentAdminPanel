@@ -1,11 +1,11 @@
 ﻿
 @model List<BookShop.Models.ViewModels.BookIndexViewModel>
-@using BookShop.GeneralMethods
+
 @{
     ViewData["Title"] = "AdvansedSearch";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
+@inject ConvertMidaldiToShamsiString convertMiladiToShamsi
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -50,7 +50,7 @@
                                     <td class="text-center">@item.Price.ToString("N0")</td>
                                     <td class="text-center">
                                         @(item.Ispublish?
-                                             PersianDatetimeCalculator.ConvertMidaldiToShamsi(item.PublishDate):"بدون تاریخ")
+                                             convertMiladiToShamsi.ConvertMidaldiToShamsi(item.PublishDate):"بدون تاریخ")
                                     </td>
                                     <td class="text-center">
                                         @if (item.Ispublish == true)

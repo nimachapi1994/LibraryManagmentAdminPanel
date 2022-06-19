@@ -1,5 +1,4 @@
-﻿using BookShop.Data;
-using BookShop.GeneralMethods;
+﻿using BookShop.GeneralMethods;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;

@@ -1,5 +1,4 @@
-﻿using BookShop.Data;
-using BookShop.Models.ViewModels;
+﻿using BookShop.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ namespace BookShop.Models.Repository
 {
     public class BookRepository
     {
-        public BookShopContext bookShopContext;
+        private BookShopContext bookShopContext;
         public BookRepository(BookShopContext _bookshopcontext)
         {
             bookShopContext = _bookshopcontext;

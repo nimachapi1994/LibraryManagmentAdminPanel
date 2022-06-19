@@ -1,4 +1,5 @@
-using BookShop.Data;
+using BookShop.GeneralMethods;
+using BookShop.Models;
 using BookShop.Models.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,11 +32,12 @@ namespace BookShop
             services.AddDbContext<BookShopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<BookRepository>();
-
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<BookShopContext>();
+            services.AddTransient<ConvertMidaldiToShamsiDigit>();
+            services.AddTransient<ConvertMidaldiToShamsiString>();
+            services.AddTransient<PersianDatetimeCalculator>();
             services.AddControllersWithViews();
 
 
@@ -69,17 +71,17 @@ namespace BookShop
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
               name: "areas",
               pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-             endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-               // endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                       name: "default",
+                       pattern: "{controller=Home}/{action=Index}/{id?}");
+                // endpoints.MapRazorPages();
             });
         }
     }

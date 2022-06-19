@@ -1,10 +1,10 @@
 ﻿@model BookShop.Models.Book
-@using BookShop.GeneralMethods
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
+@inject ConvertMidaldiToShamsiString convertMiladiToShamsi
 
 <div class="row">
     <div class="col-md-12">
@@ -108,7 +108,7 @@
                                     تاریخ انتشار :
                                     @if (Model.PublishDate != null)
                                     {
-                                        @PersianDatetimeCalculator.ConvertMidaldiToShamsi((DateTime)Model.PublishDate)
+                                        @convertMiladiToShamsi.ConvertMidaldiToShamsi((DateTime)Model.PublishDate)
                                     }
 
                                     else

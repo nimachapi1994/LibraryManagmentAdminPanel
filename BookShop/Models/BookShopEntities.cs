@@ -18,11 +18,11 @@ namespace BookShop.Models
         public string Stock { get; set; }
         public string Summary { get; set; }
         public int PublisherID { get; set; }
-       public int NumOfPage { get; set; }
+        public int NumOfPage { get; set; }
         public short Weight { get; set; }
         public string ISBN { get; set; }
         public int Price { get; set; }
-      public DateTime? PublishDate { get; set; }
+        public DateTime? PublishDate { get; set; }
         public bool IsPublish { get; set; }
         public int PublishYear { get; set; }
         public bool IsDeleted { get; set; }
@@ -127,15 +127,12 @@ namespace BookShop.Models
     public class Customer
     {
         public int CustomerId { get; set; }
-        [Column("Fname", TypeName = "nvarchar(50)")]
-        [MaxLength(100)]
-        public string FirstName { get; set; }
-        [Column("Lname", TypeName = "nvarchar(50)"), Required]
-        [MaxLength(100)]
-        public string LastName { get; set; }
+        public string PostalCode1 { get; set; }
+        public string PostalCode2 { get; set; }
 
-        [NotMapped]//در پایگاه این ستون ایجاد نمیشود
-        public int Age { get; set; }
+
+        //[NotMapped]//در پایگاه این ستون ایجاد نمیشود
+        //public int Age { get; set; }
         public string Address1 { get; set; }
         public string Address { get; set; }
         public DateTime BirthDate { get; set; }

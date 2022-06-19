@@ -4,7 +4,7 @@
 
 
 
-@using BookShop.GeneralMethods
+@inject ConvertMidaldiToShamsiDigit ConvertMiladiToShamsi
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Admin.cshtml";
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered searchta">
+                    <table class="table table-bordered searchta table-responsive table-striped">
                         <thead>
 
                             <tr>
@@ -167,7 +167,7 @@
                                     <td class="text-center">@item.Price.ToString("N0")</td>
                                     <td class="text-center">
                                         @(item.Ispublish?
-                                             PersianDatetimeCalculator.ConvertMidaldiToShamsi(item.PublishDate):"بدون تاریخ")
+                                             ConvertMiladiToShamsi.ConvertMidaldiToShamsi(item.PublishDate):"بدون تاریخ")
                                     </td>
                                     <td class="text-center">
                                         <label class="badge  badge-@(item.Ispublish?"success":"info") btn-block">@(item.Ispublish?"منتشر شده":"منتشر نشده")</label>
